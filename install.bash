@@ -27,6 +27,8 @@ do
 			openssl req -x509 -batch -nodes -newkey rsa:2048 -keyout tpot.key -out tpot.crt -days 1095
 			cp tpot.key /opt/tpot/docker/elk/logstash_collector/dist/
 			cp tpot.crt /opt/tpot/docker/elk/logstash_collector/dist/
+			rm tpot.key
+			rm tpot.crt
 			ls -la /opt/tpot/docker/elk/logstash_collector/dist/tpot.key
 			ls -la /opt/tpot/docker/elk/logstash_collector/dist/tpot.crt
 			echo -e "${GREEN}[+] Building docker!${ENDCOLOR}"

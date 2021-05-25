@@ -25,7 +25,6 @@ do
             ;;
         "Sensor")
             echo "You chose Sensor installation"
-            ;;
 			sleep 3
 			echo -e "${GREEN}[+] Copying files, please wait${ENDCOLOR}"
 			echo -e "${RED}------------------------------${ENDCOLOR}"
@@ -50,6 +49,7 @@ do
 			echo -e "${GREEN}[+] All done!${ENDCOLOR}"
 			echo -e "${RED}---------------${ENDCOLOR}"
 			echo
+			;;
         "Quit")
             break
             ;;

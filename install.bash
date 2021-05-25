@@ -21,11 +21,10 @@ do
 			echo -e "${GREEN}[+] Copying docker compose files, please wait${ENDCOLOR}"
 			echo -e "${RED}------------------------------${ENDCOLOR}"
 			cp collector.yml /opt/tpot/etc/compose/collector.yml
-			echo
 
 			echo -e "${GREEN}[+] All done!${ENDCOLOR}"
 			echo -e "${RED}---------------${ENDCOLOR}"
-			echo
+			
 			break
             ;;
         "Sensor")
@@ -37,12 +36,19 @@ do
 			echo -e "${GREEN}[+] Copying files, please wait${ENDCOLOR}"
 			echo -e "${RED}------------------------------${ENDCOLOR}"
 			cp -r logstash_sensor/ /opt/tpot/docker/elk/
+			ls -la /opt/tpot/docker/elk/ | grep logstash_sensor
 			sleep 3
 			echo
+			echo -e "${GREEN}[+] Copying Certificate file, please wait${ENDCOLOR}"
+			echo -e "${RED}------------------------------${ENDCOLOR}"
+			cp /tmp/tpot.crt /opt/tpot/docker/elk/logstash_sensor/dist/
+			ls -la /opt/tpot/docker/elk/logstash_sensor/dist/tpot.crt
+			rm /tmp/tpot.crt
 
 			echo -e "${GREEN}[+] Copying docker compose files, please wait${ENDCOLOR}"
 			echo -e "${RED}------------------------------${ENDCOLOR}"
 			cp sensor.yml /opt/tpot/etc/compose/sensor.yml
+			ls -la /opt/tpot/etc/compose/sensor.yml
 			echo
 
 			filename="/opt/tpot/docker/elk/logstash_sensor/dist/logstash.conf"

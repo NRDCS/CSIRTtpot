@@ -1,5 +1,6 @@
 #!/bin/bash
 RED="\e[31m" GREEN="\e[32m" ENDCOLOR="\e[0m" 
+echo -e "${GREEN}[+] Select installation method: ${ENDCOLOR}"
 PS3='Please enter your choice: '
 options=("Collector" "Sensor" "Quit")
 select opt in "${options[@]}"
@@ -25,6 +26,7 @@ do
 			echo -e "${GREEN}[+] All done!${ENDCOLOR}"
 			echo -e "${RED}---------------${ENDCOLOR}"
 			echo
+			break
             ;;
         "Sensor")
             echo "You chose Sensor installation"
@@ -55,6 +57,7 @@ do
 			echo -e "${GREEN}[+] All done!${ENDCOLOR}"
 			echo -e "${RED}---------------${ENDCOLOR}"
 			echo
+			break
 			;;
         "Quit")
             break

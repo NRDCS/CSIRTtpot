@@ -1,13 +1,16 @@
 #!/bin/bash
 RED="\e[31m" GREEN="\e[32m" ENDCOLOR="\e[0m" 
 PS3='Please enter your choice: '
-options=("Collector" "Sensor")
+options=("Collector" "Sensor" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
         "Collector")
             echo "You chose Collector installation"
-			sleep 3
+			echo "Stop TPOT service"
+			service tpot stop
+			sleep 5
+			echo
 			echo -e "${GREEN}[+] Copying files, please wait${ENDCOLOR}"
 			echo -e "${RED}------------------------------${ENDCOLOR}"
 			cp -r logstash_collector/ /opt/tpot/docker/elk/
@@ -25,7 +28,10 @@ do
             ;;
         "Sensor")
             echo "You chose Sensor installation"
-			sleep 3
+			echo "Stop TPOT service"
+			service tpot stop
+			sleep 5
+			echo
 			echo -e "${GREEN}[+] Copying files, please wait${ENDCOLOR}"
 			echo -e "${RED}------------------------------${ENDCOLOR}"
 			cp -r logstash_sensor/ /opt/tpot/docker/elk/

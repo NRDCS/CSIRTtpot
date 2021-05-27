@@ -10,7 +10,6 @@ do
             echo "You chose Collector installation"
 			echo "Stop TPOT service"
 			service tpot stop
-			service tpot status
 			sleep 5
 			echo
 			echo -e "${GREEN}[+] Copying files, please wait${ENDCOLOR}"
@@ -44,7 +43,6 @@ do
             echo "You chose Sensor installation"
 			echo "Stop TPOT service"
 			service tpot stop
-			service tpot status
 			sleep 5
 			echo
 			echo -e "${GREEN}[+] Copying logstash_sensor container, please wait${ENDCOLOR}"

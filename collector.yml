@@ -127,7 +127,7 @@ services:
     restart: always
     environment:
      - bootstrap.memory_lock=true
-     - ES_JAVA_OPTS=-Xms2048m -Xmx2048m
+#     - ES_JAVA_OPTS=-Xms2048m -Xmx2048m
      - ES_TMPDIR=/tmp
     cap_add:
      - IPC_LOCK
@@ -138,7 +138,7 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    mem_limit: 4g
+#    mem_limit: 4g
     ports:
      - "127.0.0.1:64298:9200"
     image: "dtagdevsec/elasticsearch:2006"
@@ -160,17 +160,14 @@ services:
   logstash:
     container_name: logstash
     restart: always
-    environment:
-     - LS_JAVA_OPTS=-Xms2048m -Xmx2048m
+#    environment:
+#     - LS_JAVA_OPTS=-Xms2048m -Xmx2048m
     depends_on:
       elasticsearch:
         condition: service_healthy
-    ports:
-     - "65501:65501"
     env_file:
      - /opt/tpot/etc/compose/elk_environment
-    # image: "dtagdevsec/logstash:2006"
-    image: "logstash_collector:latest"
+    image: "dtagdevsec/logstash:2006"
     volumes:
      - /data:/data
 
@@ -187,6 +184,26 @@ services:
     read_only: true
 
 # Ewsposter service
+  ewsposter:
+    container_name: ewsposter
+    restart: always
+    networks:
+     - ewsposter_local
+    environment:
+     - EWS_HPFEEDS_ENABLE=false
+     - EWS_HPFEEDS_HOST=host
+     - EWS_HPFEEDS_PORT=port
+     - EWS_HPFEEDS_CHANNELS=channels
+     - EWS_HPFEEDS_IDENT=user
+     - EWS_HPFEEDS_SECRET=secret
+     - EWS_HPFEEDS_TLSCERT=false
+     - EWS_HPFEEDS_FORMAT=json
+    env_file:
+     - /opt/tpot/etc/compose/elk_environment
+    image: "dtagdevsec/ewsposter:2006"
+    volumes:
+     - /data:/data
+     - /data/ews/conf/ews.ip:/opt/ewsposter/ews.ip
 
 # Nginx service
   nginx:

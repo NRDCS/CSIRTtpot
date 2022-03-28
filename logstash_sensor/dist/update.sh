@@ -35,22 +35,6 @@ if [ "$myCHECK" == "0" ];
     echo "Cannot reach Listbot, starting Logstash without latest translation maps."
 fi
 
-# Distributed T-Pot installation needs a different pipeline config and autossh tunnel. 
-if [ "$MY_TPOT_TYPE" == "POT" ];
-  then
-    echo
-    echo "Distributed T-Pot setup, sending T-Pot logs to $MY_HIVE_IP."
-    echo
-    echo "T-Pot type: $MY_TPOT_TYPE"
-    echo "Keyfile used: $MY_POT_PRIVATEKEYFILE"
-    echo "Hive username: $MY_HIVE_USERNAME"
-    echo "Hive IP: $MY_HIVE_IP"
-    echo
-    cp /usr/share/logstash/config/pipelines_pot.yml /usr/share/logstash/config/pipelines.yml
-    autossh -f -M 0 -4 -l $MY_HIVE_USERNAME -i $MY_POT_PRIVATEKEYFILE -p 64295 -N -L64305:127.0.0.1:64305 $MY_HIVE_IP -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null"
-    exit 0
-fi
-
 # We do want to enforce our es_template thus we always need to delete the default template, putting our default afterwards
 # This is now done via common_configs.rb => overwrite default logstash template
 echo "Removing logstash template."
@@ -60,7 +44,7 @@ echo "Checking if empty."
 curl -s -XGET http://elasticsearch:9200/_template/logstash
 echo
 echo "Putting default template."
-curl -XPUT "http://elasticsearch:9200/_template/logstash" -H 'Content-Type: application/json' -d'
+curl -s -XPUT "http://elasticsearch:9200/_template/logstash" -H 'Content-Type: application/json' -d'
 {
   "index_patterns" : "logstash-*",
   "version" : 60001,
@@ -99,15 +83,6 @@ curl -XPUT "http://elasticsearch:9200/_template/logstash" -H 'Content-Type: appl
       "@timestamp": { "type": "date"},
       "@version": { "type": "keyword"},
       "geoip"  : {
-        "dynamic": true,
-        "properties" : {
-          "ip": { "type": "ip" },
-          "location" : { "type" : "geo_point" },
-          "latitude" : { "type" : "half_float" },
-          "longitude" : { "type" : "half_float" }
-        }
-      },
-      "geoip_ext"  : {
         "dynamic": true,
         "properties" : {
           "ip": { "type": "ip" },

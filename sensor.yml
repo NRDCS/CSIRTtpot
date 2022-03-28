@@ -498,8 +498,6 @@ services:
     environment:
     # For ET Pro ruleset replace "OPEN" with your OINKCODE
      - OINKCODE=OPEN
-    # Loading externel Rules from URL 
-    # - FROMURL="https://username:password@yoururl.com|https://username:password@otherurl.com"
     network_mode: "host"
     cap_add:
      - NET_ADMIN
@@ -515,23 +513,16 @@ services:
 ##################
 
 # Ewsposter service
-  ewsposter:
-    container_name: ewsposter
+
+## Logstash service
+  logstash:
+    container_name: logstash
     restart: always
-    networks:
-     - ewsposter_local
     environment:
-     - EWS_HPFEEDS_ENABLE=false
-     - EWS_HPFEEDS_HOST=host
-     - EWS_HPFEEDS_PORT=port
-     - EWS_HPFEEDS_CHANNELS=channels
-     - EWS_HPFEEDS_IDENT=user
-     - EWS_HPFEEDS_SECRET=secret
-     - EWS_HPFEEDS_TLSCERT=false
-     - EWS_HPFEEDS_FORMAT=json
+     - LS_JAVA_OPTS=-Xms2048m -Xmx2048m
     env_file:
      - /opt/tpot/etc/compose/elk_environment
-    image: "dtagdevsec/ewsposter:2006"
+    # image: "dtagdevsec/logstash:2006"
+    image: "logstash_sensor:latest"
     volumes:
      - /data:/data
-     - /data/ews/conf/ews.ip:/opt/ewsposter/ews.ip
